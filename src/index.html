@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>가좌고</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo" onclick="loadmain()">가좌고 알리미</div>
+    <nav>
+      <a onclick="loadtimetable()">시간표</a>
+      <a onclick="loadfood()">급식</a>
+      <a onclick="loadcalendar()">급식</a>
+    </nav>
+  </header>
+
+  <h1 style="text-align:center;" id="title">가좌고 알리미</h1>
+
+  <div id="content">
+    학교 홈페이지는 쓸모없고 급식, 시간표, 일정 다 따로따로 찾아보느라 열받아서 내가 만들었다
+  </div>
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
