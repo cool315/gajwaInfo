@@ -53,3 +53,31 @@ thead {
 tbody tr:nth-child(even) {
   background: #f9fafb;
 }
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  max-width: 600px;
+  margin: 20px auto;
+}
+.day {
+  border: 1px solid #ccc;
+  min-height: 80px;
+  padding: 5px;
+  font-size: 14px;
+  position: relative;
+}
+.day-header {
+  font-weight: bold;
+  text-align: center;
+  background: #f0f0f0;
+  padding: 5px;
+}
+.event {
+  font-size: 12px;
+  margin-top: 5px;
+  padding: 2px;
+  background: #ffefc4;
+  border-radius: 4px;
+}
