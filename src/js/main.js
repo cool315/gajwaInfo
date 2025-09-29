@@ -86,50 +86,79 @@ function renderTimetable(data) {
 
 function decreaseMonth() {
   month--;
-  if(month <= 0) {
-    month = 12
+  if (month <= 0) {
+    month = 12;
     year--;
-  } else if(month >= 13) {
-    month = 1
+  } else if (month >= 13) {
+    month = 1;
     year++;
   }
 
   const monthDisplay = document.querySelector("#monthlabel");
-  monthDisplay.innerText = `${year} / ${month}`
+  if (monthDisplay) {
+    monthDisplay.innerText = `${year} / ${month}`;
+  }
 
-  socket.emit('calendar', {
-    "year": year,
-    "month": month
-  })
+  socket.emit("calendar", {
+    year: year,
+    month: month,
+  });
+} function increaseMonth() {
+  month++;
+  if (month <= 0) {
+    month = 12;
+    year--;
+  } else if (month >= 13) {
+    month = 1;
+    year++;
+  }
+
+  const monthDisplay = document.querySelector("#monthlabel");
+  if (monthDisplay) {
+    monthDisplay.innerText = `${year} / ${month}`;
+  }
+
+  socket.emit("calendar", {
+    year: year,
+    month: month,
+  });
 }
-function renderCalendarPage(data) {
-  contentDisplay.innerHTML = "" //리셋
 
-  let JSmonth = month - 1; // JS에서 0=1월 → 8=9월
+function renderCalendarPage(data) {
+  contentDisplay.innerHTML = ""; // 리셋
 
   const MonthDisplay = document.createElement("div");
   MonthDisplay.id = "monthlabel";
-  MonthDisplay.innerText = `${year} / ${JSmonth}`
+  MonthDisplay.innerText = `${year} / ${month}`;
 
   const DecreaseBtn = document.createElement("button");
-  DecreaseBtn.id = "monthlabel";
-  DecreaseBtn.onclick = decreaseMonth();
+  DecreaseBtn.id = "DecraseMonthBtn";
+  DecreaseBtn.innerText = "이전 달";
+  DecreaseBtn.onclick = decreaseMonth;
+
+  const IncreaseBtn = document.createElement("button");
+  IncreaseBtn.id = "IncreaseMonthBtn";
+  IncreaseBtn.innerText = "이전 달";
+  IncreaseBtn.onclick = increaseMonth;
 
   const calendar = document.createElement("div");
-  calendar.className = "calendar";  // 클래스 지정
-  calendar.id = "calendar";        // 아이디 지정
+  calendar.className = "calendar";
+  calendar.id = "calendar";
 
   // content div 안에 삽입
+  contentDisplay.appendChild(MonthDisplay);
+  contentDisplay.appendChild(DecreaseBtn);
+  contentDisplay.appendChild(IncreaseBtn);
   contentDisplay.appendChild(calendar);
 
-  const rows = data.SchoolSchedule[1].row;
+  const rows = data.SchoolSchedule[1]?.row || [];
 
-  let firstDay = new Date(year, month, 1).getDay();
-  let lastDate = new Date(year, month + 1, 0).getDate();
+  let firstDay = new Date(year, month - 1, 1).getDay();
+  let lastDate = new Date(year, month, 0).getDate();
 
   // 요일 헤더
   const days = ["일", "월", "화", "수", "목", "금", "토"];
-  days.forEach(d => {
+  days.forEach((d) => {
     const header = document.createElement("div");
     header.textContent = d;
     header.className = "day-header";
@@ -143,17 +172,26 @@ function renderCalendarPage(data) {
     calendar.appendChild(empty);
   }
 
-  // 날짜 채우기
+  // 날짜 채우기 부분 수정
   for (let d = 1; d <= lastDate; d++) {
     const cell = document.createElement("div");
     cell.className = "day";
     cell.innerHTML = `<strong>${d}</strong>`;
 
-    // 일정 확인
-    const dateStr = `${year}${String(month+1).padStart(2,"0")}${String(d).padStart(2,"0")}`;
-    const events = rows.filter(e => e.AA_YMD === dateStr);
+    // 오늘 날짜 강조
+    if (
+      year === new Date().getFullYear() &&
+      month === new Date().getMonth() + 1 &&
+      d === new Date().getDate()
+    ) {
+      cell.classList.add("today"); // CSS로 스타일링
+    }
 
-    events.forEach(ev => {
+    // 일정 확인
+    const dateStr = `${year}${String(month).padStart(2, "0")}${String(d).padStart(2, "0")}`;
+    const events = rows.filter((e) => e.AA_YMD === dateStr);
+
+    events.forEach((ev) => {
       const div = document.createElement("div");
       div.className = "event";
       div.textContent = ev.EVENT_NM;

@@ -59,14 +59,23 @@ io.on("connection", (socket)=> {
         let lastday;
 
         switch (month) {
-            case 1: case 3: case 5: case '07': case '08': case '10': case '12':
+            case "01": case "03": case "05": case "07": case "08": case "10": case "12":
                 lastday = 31;
                 break;
-            case '04': case '06': case "09": case '11':
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                lastday = 31;
+                break;
+            case "04": case "06": case "09": case "11":
                 lastday = 30;
                 break;
-            case '02':
+            case 4: case 6: case 9: case 11:
+                lastday = 30;
+                break;
+            case "02":
             // 윤년 체크
+                lastday = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28;
+                break;
+            case 2:
                 lastday = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28;
                 break;
             default:

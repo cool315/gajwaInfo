@@ -81,3 +81,35 @@ tbody tr:nth-child(even) {
   background: #ffefc4;
   border-radius: 4px;
 }
+
+#monthlabel {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px;
+  padding: 5px 15px;
+  border-radius: 8px;
+  background-color: #ffd3b4;
+  display: inline-block;
+}
+
+#DecraseMonthBtn, #IncreaseMonthBtn {
+  padding: 6px 12px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #004085;
+  color: white;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+#DecraseMonthBtn:hover, #IncreaseMonthBtn:hover {
+  background-color: #48a1ff;
+}
+
+.day.today {
+  background-color: #ffeeba; /* 오늘 날짜 강조 */
+  border: 2px solid #ffc107;
+  border-radius: 6px;
+}
