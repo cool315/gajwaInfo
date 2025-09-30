@@ -19,7 +19,11 @@ function loadmain() {
     socket.emit("timetable");
 } function loadfood() {
     titleDisplay.innerText = "오늘의 급식"
-    socket.emit("food");
+    socket.emit("food", {
+      "year": year,
+      "month": month,
+      "day": day
+    });
 } function loadcalendar() {
     titleDisplay.innerText = "학사 일정"
     socket.emit("calendar", {

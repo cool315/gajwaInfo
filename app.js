@@ -23,9 +23,6 @@ const schoolFinder = (schoolName, region) => (schoolList) => {
 app.use(express.static(path.join(__dirname, "src")));
 const PORT = process.env.PORT || 7000;
 
-let Tdate = "00000000"
-loadTime();
-
 io.on("connection", (socket)=> {
     socket.on("timetable", ()=>{
         timetable
@@ -44,7 +41,8 @@ io.on("connection", (socket)=> {
                 });
             });
     })
-    socket.on("food", ()=>{
+    socket.on("food", (data)=>{
+        let Tdate = `${data.year}${data.month}${data.day}`
         fetch(`https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${NeisAPIKey}&Type=json&pIndex=1&pSize=100&ATPT_OFCDC_SC_CODE=J10&SD_SCHUL_CODE=7530854&MLSV_YMD=${Tdate}`)
             .then(res => res.json())
             .then((data) => {
@@ -95,21 +93,5 @@ io.on("connection", (socket)=> {
             .catch(err => console.error(err));
                 })
 })
-
-function loadTime() {
-    const now = new Date();
-
-    // 연, 월, 일
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // 0~11이므로 +1
-    const day = String(now.getDate()).padStart(2, "0");
-
-    // 시, 분, 초
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-
-    Tdate = `${year}${month}${day}`
-}
 
 server.listen(PORT, ()=>console.log(`server is running ${PORT}`))
